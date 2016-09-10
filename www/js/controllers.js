@@ -2,7 +2,7 @@ angular.module('starter.controllers', [])
 
 .controller('DashCtrl', function($scope) {})
 
-.controller('ChatsCtrl', function($scope, Chats) {
+.controller('ChatsCtrl', function($scope, Chats, $timeout) {
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
   // To listen for when this page is active (for example, to refresh data),
@@ -10,6 +10,18 @@ angular.module('starter.controllers', [])
   //
   //$scope.$on('$ionicView.enter', function(e) {
   //});
+
+
+  $scope.misMensajes = [];
+  
+  var VariableFireBase = new Firebase('https://proyecto1-3ddb9.firebaseio.com/usuarios/');
+   VariableFireBase.on('child_added', function (snapshot) {
+      $timeout(function(){
+        var message = snapshot.val();
+        $scope.misMensajes.push(message);
+        console.log($scope.misMensajes);
+      });
+   });
 
   $scope.chats = Chats.all();
   $scope.remove = function(chat) {
